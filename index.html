@@ -1,1 +1,411 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Info Primării Teleorman</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .chat-container {
+            height: 400px;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(10px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .user-message {
+            text-align: right;
+        }
+
+        .user-message .bubble {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: inline-block;
+            padding: 10px 15px;
+            border-radius: 18px 18px 4px 18px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .bot-message {
+            text-align: left;
+        }
+
+        .bot-message .bubble {
+            background: white;
+            color: #333;
+            display: inline-block;
+            padding: 10px 15px;
+            border-radius: 18px 18px 18px 4px;
+            max-width: 80%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .input-container {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #667eea;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .suggestions {
+            padding: 15px 20px;
+            background: #f0f0f0;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .suggestions h3 {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .suggestion-chip {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 3px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .suggestion-chip:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏛️ Info Primării Teleorman</h1>
+            <p>Întreabă despre orice primărie din județ</p>
+        </div>
+        
+        <div class="chat-container" id="chatContainer">
+            <div class="message bot-message">
+                <div class="bubble">
+                    Bună! 👋 Pot să îți ofer informații despre primăriile din județul Teleorman. 
+                    Întreabă-mă despre telefon, fax, email sau persoana de contact pentru orice primărie.
+                </div>
+            </div>
+        </div>
+
+        <div class="suggestions">
+            <h3>Întrebări rapide:</h3>
+            <span class="suggestion-chip" onclick="askQuestion('Telefon Roșiori')">📞 Telefon Roșiori</span>
+            <span class="suggestion-chip" onclick="askQuestion('Email Alexandria')">📧 Email Alexandria</span>
+            <span class="suggestion-chip" onclick="askQuestion('Primar Turnu Măgurele')">👤 Primar Turnu Măgurele</span>
+            <span class="suggestion-chip" onclick="askQuestion('Contact Videle')">📋 Contact Videle</span>
+        </div>
+        
+        <div class="input-container">
+            <input type="text" id="userInput" placeholder="Scrie întrebarea ta aici..." 
+                   onkeypress="if(event.key==='Enter') sendMessage()">
+            <button onclick="sendMessage()">Trimite</button>
+        </div>
+    </div>
+
+    <script>
+        // Baza de date cu informațiile primăriilor
+        const primarii = [
+            {localitate: "Alexandria", primar: "Drăgușin Victor", telefon: "0247 317727", fax: "0247 317728", email: "primalex@alexandria.ro"},
+            {localitate: "Roșiorii de Vede", primar: "Cîrciumaru Gheorghe Valerică", telefon: "0247 466250", fax: "0247 466141", email: "cancelarie@primariarosioriidevede.ro"},
+            {localitate: "Turnu Măgurele", primar: "Cuclea Dănuț", telefon: "0247 416453", fax: "0247 416453", email: "primariatm@yahoo.com"},
+            {localitate: "Videle", primar: "Gogan Cornel", telefon: "0247 453017", fax: "0247 453015", email: "primariavidele@yahoo.com"},
+            {localitate: "Zimnicea", primar: "Pârvu Petre", telefon: "0247 366431", fax: "0247 366780", email: "secretariat@orasulzimnicea.ro"},
+            {localitate: "Balaci", primar: "Calotă Ilie", telefon: "0247 336003", fax: "0247 336003", email: "primariabalaci@gmail.com"},
+            {localitate: "Băbăița", primar: "Vîrtopeanu Stelea", telefon: "0347 415020", fax: "0347 415020", email: "primariababaita@yahoo.com"},
+            {localitate: "Beciu", primar: "Manea Marius", telefon: "0247 356918", fax: "0247 356918", email: "comunabeciu@yahoo.com"},
+            {localitate: "Beuca", primar: "Bădăuță Eugen Stan", telefon: "0247 336255", fax: "0247 336255", email: "primariabeuca@yahoo.com"},
+            {localitate: "Blejești", primar: "Pietreanu Narcis Cătălin", telefon: "0247 452502", fax: "0247 452502", email: "blejesti_tr@yahoo.com"},
+            {localitate: "Bogdana", primar: "Pîrnea Marin", telefon: "0247 329013", fax: "0247 329013", email: "primariabogdana@yahoo.co.uk"},
+            {localitate: "Botoroaga", primar: "Ivan Parpală Gheorghiță", telefon: "0247 442106", fax: "0247 442111", email: "primaria.botoroaga@yahoo.com"},
+            {localitate: "Bragadiru", primar: "Chisac Cristian Ionel", telefon: "0247 335203", fax: "0247 335065", email: "primariabragadirutr@yahoo.com"},
+            {localitate: "Brânceni", primar: "Gherghe Sorin", telefon: "0247 431448", fax: "0247 431448", email: "primaria.brinceni@yahoo.com"},
+            {localitate: "Bujoreni", primar: "Burcea Florentin", telefon: "0247 443169", fax: "0247 443169", email: "primariabujoreni@gmail.com"},
+            {localitate: "Bujoru", primar: "Avram Ginel Sorin", telefon: "0247 335609", fax: "0247 335609", email: "bujoru@gmail.com"},
+            {localitate: "Buzescu", primar: "Trăistaru Valentin", telefon: "0247 330635", fax: "0247 330723", email: "primaria.buzescu@gmail.com"},
+            {localitate: "Călinești", primar: "Haită Gabriel", telefon: "0247 431177", fax: "0247 431004", email: "calinesti@gmail.com"},
+            {localitate: "Călmățuiu", primar: "Nițu George Valentin", telefon: "0247 430620", fax: "0247 430620", email: "primariacalmatuiu@yahoo.com"},
+            {localitate: "Călmățuiu de Sus", primar: "Udrea Lucrețiu Bogdan", telefon: "0247 356211", fax: "0247 356211", email: "secretariat@primariacalmatuiudesus.ro"},
+            {localitate: "Cervenia", primar: "Slobozeanu Doru Marius", telefon: "0247 333542", fax: "0247 333541", email: "primarcervenia@yahoo.com"},
+            {localitate: "Ciolănești", primar: "Icleanu Viorel Ionel", telefon: "0247 336401", fax: "0247 336450", email: "primaria_ciolanesti@yahoo.com"},
+            {localitate: "Ciuperceni", primar: "Stoicea Lucian", telefon: "0247 419590", fax: "0247 419590", email: "primariaciuperceni@yahoo.com"},
+            {localitate: "Conțești", primar: "Peța Viorel", telefon: "0247 334296", fax: "0247 334296", email: "primariacontesti@gmail.com"},
+            {localitate: "Cosmești", primar: "Dinu Mihail", telefon: "0247 708523", fax: "0247 708523", email: "primariacosmesti@yahoo.com"},
+            {localitate: "Crângeni", primar: "Pîrvan Florin Stelian", telefon: "0247 435177", fax: "0247 435177", email: "primaria.cringeni@yahoo.com"},
+            {localitate: "Crângu", primar: "Dan Cristinel Nicu", telefon: "0247 329623", fax: "0247 329623", email: "primariacringu@yahoo.com"},
+            {localitate: "Crevenicu", primar: "Iancu Adrian Constantin", telefon: "0247 450171", fax: "0247 450171", email: "primariacrevenicu@yahoo.com"},
+            {localitate: "Didești", primar: "Măceacă Barbu", telefon: "-", fax: "-", email: "primaria_didesti@yahoo.com"},
+            {localitate: "Dobrotești", primar: "Mănica Ion", telefon: "0374 935377", fax: "0374 935377", email: "primariadobrotesti@yahoo.com"},
+            {localitate: "Dracea", primar: "Tismănaru Cristian Adrian", telefon: "0347 807230", fax: "0347 807230", email: "primariadracea@yahoo.com"},
+            {localitate: "Drăcșenei", primar: "Popescu Marin", telefon: "-", fax: "-", email: "dracseneitr@yahoo.com"},
+            {localitate: "Drăgănești de Vede", primar: "Stanciu Marius", telefon: "-", fax: "-", email: "primariadraganestidevede@yahoo.com"},
+            {localitate: "Drăgănești Vlașca", primar: "Pena Dorin Florentin", telefon: "0247 440357", fax: "0247 440357", email: "primaria_draganesti_vlasca@yahoo.com"},
+            {localitate: "Fântânele", primar: "Pîrvan Ionel Stelian", telefon: "0247 451082", fax: "0247 451082", email: "comuna.fantanele@yahoo.com"},
+            {localitate: "Frăsinet", primar: "Ghimiș Florentin Adrian", telefon: "0247 433531", fax: "0247 433531", email: "primariafrasinet@yahoo.com"},
+            {localitate: "Frumoasa", primar: "Dragne Marian", telefon: "0247 335902", fax: "0247 335902", email: "primariafrumoasa@yahoo.com"},
+            {localitate: "Furculești", primar: "Pană Ginel Florin", telefon: "0247 328768", fax: "0247 328768", email: "primariafurculesti@yahoo.com"},
+            {localitate: "Gălăteni", primar: "Ivana Iuliana", telefon: "0247 434034", fax: "0247 434034", email: "primgalateni@yahoo.com"},
+            {localitate: "Gratia", primar: "Florea Ion", telefon: "0247 458301", fax: "0247 458252", email: "gratiaprim@yahoo.com"},
+            {localitate: "Islaz", primar: "Geară Ion Gheorghe Cătălin", telefon: "0247 420206", fax: "0247 420306", email: "primariaislaz@yahoo.com"},
+            {localitate: "Izvoarele", primar: "Ghena Dan", telefon: "0247 333838", fax: "0247 333838", email: "primaria_izvoarele@yahoo.com"},
+            {localitate: "Lisa", primar: "Băcanu Daniel Sorin", telefon: "0247 360703", fax: "0247 360703", email: "lissa_tr@yahoo.com"},
+            {localitate: "Lița", primar: "Nonea Marian", telefon: "0247 359506", fax: "0247 359577", email: "primaria.lita@yahoo.com"},
+            {localitate: "Lunca", primar: "Purcea Valeriu Florin", telefon: "0247 358362", fax: "0247 358362", email: "primarialuncateleorman@yahoo.com"},
+            {localitate: "Mavrodin", primar: "Stan Nicolae", telefon: "-", fax: "-", email: "primaria_mavrodin@yahoo.com"},
+            {localitate: "Măgura", primar: "Ionescu Atanase", telefon: "0247 320689", fax: "0247 331502", email: "primaria.magura@gmail.com"},
+            {localitate: "Măldăeni", primar: "Oprina Ion", telefon: "0247 337112", fax: "0247 337112", email: "primariamaldaieni@yahoo.com"},
+            {localitate: "Mârzănești", primar: "Mazilu Liviu Adrian", telefon: "0247 331808", fax: "0247 331808", email: "primariamarzanesti@yahoo.co.uk"},
+            {localitate: "Mereni", primar: "Stoenescu Sergiu", telefon: "0247 450608", fax: "0247 450608", email: "prim.mereni@gmail.com"},
+            {localitate: "Moșteni", primar: "Tăbărana Vică", telefon: "0247 356012", fax: "0247 356012", email: "secretariat@comunamosteni.ro"},
+            {localitate: "Nanov", primar: "Ghene Adrian", telefon: "0247 319902", fax: "0247 319902", email: "primaria_nanov@yahoo.com"},
+            {localitate: "Năsturelu", primar: "Cristea Dănuț Florin", telefon: "0247 368807", fax: "0247 368011", email: "primarianasturelu@yahoo.com"},
+            {localitate: "Necșești", primar: "Bănăseanu Marian Ilie", telefon: "0247 708025", fax: "0247 708026", email: "primaria.necsesti@yahoo.com"},
+            {localitate: "Nenciulești", primar: "Necea Vița", telefon: "-", fax: "-", email: "pnenciulesti@yaho.com"},
+            {localitate: "Olteni", primar: "Ionescu Violeta Cătălina", telefon: "0247 432118", fax: "0247 432118", email: "primarolteni@yahoo.com"},
+            {localitate: "Orbeasca", primar: "Necșuțu Ilie Marian", telefon: "0247 430010", fax: "0247 430207", email: "primar@primariaorbeasca.ro"},
+            {localitate: "Peretu", primar: "Soreață Florin Mihai", telefon: "0247 327167", fax: "0247 327167", email: "primaria.peretu@yahoo.com"},
+            {localitate: "Piatra", primar: "Strîmbu Costel", telefon: "0247 361103", fax: "0247 361103", email: "primaria_piatra_tr@yahoo.com"},
+            {localitate: "Pietroșani", primar: "Picu Emil", telefon: "0247 334402", fax: "0247 334620", email: "prinpietrosani@yahoo.com"},
+            {localitate: "Plopii Slăvitești", primar: "Alexe Marcel", telefon: "0247 356701", fax: "0247 356809", email: "primaria.plopii.slavitesti@gmail.com"},
+            {localitate: "Plosca", primar: "Grosu Daniel", telefon: "0247 327501", fax: "0247 327501", email: "primaria_ploscas@yahoo.com"},
+            {localitate: "Poeni", primar: "Icluș Ionel", telefon: "0247 457109", fax: "0247 457005", email: "conta.primariapoeni@gmail.com"},
+            {localitate: "Poroschia", primar: "Badea Iulian", telefon: "0247 318787", fax: "0371 521035", email: "primariaporoschia@yahoo.com"},
+            {localitate: "Purani", primar: "Necula Petrică", telefon: "-", fax: "-", email: "primariapurani@yahoo.com"},
+            {localitate: "Putineiu", primar: "Sima Ionuț Dorin", telefon: "0247 358139", fax: "0247 358139", email: "primariaputineiu@yahoo.com"},
+            {localitate: "Rădoiești", primar: "Cioacă Ion", telefon: "0247 337303", fax: "0247 337303", email: "primariaradoiesti@yahoo.com"},
+            {localitate: "Răsmirești", primar: "Mihai Viorel", telefon: "0247 328403", fax: "0247 328566", email: "primaria.rasmiresti@yahoo.com"},
+            {localitate: "Saelele", primar: "Cârjan Gabriel", telefon: "0247 358489", fax: "0247 358489", email: "primaria.saelele@yahoo.com"},
+            {localitate: "Salcia", primar: "Șună Marius", telefon: "0247 357095", fax: "0247 357099", email: "primariasalciatr@yahoo.com"},
+            {localitate: "Săceni", primar: "Vișănoiu Marin", telefon: "0247 337402", fax: "0247 337402", email: "saceni_tr@yahoo.com"},
+            {localitate: "Sârbeni", primar: "Șerban Stelian", telefon: "0247 459105", fax: "0247 459105", email: "primariacomuneisirbeni@yahoo.com"},
+            {localitate: "Scrioaștea", primar: "Anghel Alexandru", telefon: "0247 459406", fax: "0247 459406", email: "primariacomscrioastea@yahoo.com"},
+            {localitate: "Scurtu Mare", primar: "Lăzărescu Ilie Costel", telefon: "-", fax: "-", email: "s.primarie@yahoo.com"},
+            {localitate: "Seaca", primar: "Dincă Marian Emil", telefon: "0247 420850", fax: "0247 420850", email: "primaria_seaca@yahoo.com"},
+            {localitate: "Segarcea Vale", primar: "Gheldiu Claudiu Gabriel", telefon: "0247 358794", fax: "0247 358794", email: "primariasegarceavale@yahoo.com"},
+            {localitate: "Sfinteşti", primar: "Ceaușu Marian Anișor", telefon: "0347 524158", fax: "-", email: "sfintesti_tr@yahoo.com"},
+            {localitate: "Siliștea", primar: "Marin Alexandru", telefon: "0247 452633", fax: "0247 452633", email: "primaria.silistea@yahoo.com"},
+            {localitate: "Siliștea Gumești", primar: "Dicu Anișoara", telefon: "-", fax: "-", email: "primaria_silistea_gumesti@yahoo.com"},
+            {localitate: "Slobozia Mândra", primar: "Ștefan Marinel", telefon: "0247 359046", fax: "0247 359046", email: "primariasloboziamandratr@gmail.com"},
+            {localitate: "Smârdioasa", primar: "Pomojnicu George", telefon: "0247 332286", fax: "0372 871877", email: "prim_smardioasa@yahoo.com"},
+            {localitate: "Stejaru", primar: "Moise Alexandru", telefon: "0247 337602", fax: "0247 337602", email: "primaria.stejaru@yahoo.com"},
+            {localitate: "Suhaia", primar: "Barbu Polexia Georgiana", telefon: "0247 451100", fax: "0247 451474", email: "suhaia_tr@yahoo.com"},
+            {localitate: "Ștorobăneasa", primar: "Putineanu Marius Mugurel", telefon: "0247 332876", fax: "0247 333197", email: "primstorobaneasa@yahoo.com"},
+            {localitate: "Talpa", primar: "Netejoru Cleofir", telefon: "0247 898255", fax: "0247 898255", email: "primaria_talpa@yahoo.com"},
+            {localitate: "Tătărăștii de Jos", primar: "Neagoe Aurelian", telefon: "0247 337703", fax: "0247 337703", email: "primariatatarastiidejostr@yahoo.com"},
+            {localitate: "Tătărăștii de Sus", primar: "Dumitrescu Bogdan Alexandru", telefon: "0247 337868", fax: "0247 337713", email: "primariatatarastiidesus@yahoo.com"},
+            {localitate: "Traian", primar: "Cristea Gabriel", telefon: "0247 420613", fax: "0247 420613", email: "primariatraiantr@yahoo.com"},
+            {localitate: "Trivale Moșteni", primar: "Bocancilǎ Marius Nicolae", telefon: "0247 708009", fax: "0247 708010", email: "primarie.2009@yahoo.com"},
+            {localitate: "Troianul", primar: "Neagu Ionel", telefon: "0247 328003", fax: "0247 327977", email: "troianul_tr@yahoo.com"},
+            {localitate: "Țigănești", primar: "Pisică Florian Gelu", telefon: "0247 330001", fax: "0247 330339", email: "primariatiganesti@yahoo.com"},
+            {localitate: "Uda Clocociov", primar: "Bărbulescu Florica Aurelia", telefon: "0347 405630", fax: "0347 405631", email: "primariauda@yahoo.com"},
+            {localitate: "Vârtoape", primar: "Stancu Petre", telefon: "0247 338202", fax: "0247 338202", email: "primariavirtoape@yahoo.com"},
+            {localitate: "Vedea", primar: "Drăghici Aurel", telefon: "0247 337901", fax: "0374 091161", email: "primariavedea@yahoo.com"},
+            {localitate: "Viișoara", primar: "Neamu Tiberiu Dan", telefon: "0247 360615", fax: "0247 360506", email: "primariaviisoara_tr@gmail.com"},
+            {localitate: "Vitănești", primar: "Toader Gabriel", telefon: "0247 331225", fax: "0247 331225", email: "primariavitanesti@gmail.com"},
+            {localitate: "Zâmbreasca", primar: "Răduț Marin", telefon: "0247 338401", fax: "0247 338401", email: "primaria.zambreasca@gmail.com"}
+        ];
+
+        function searchPrimaria(query) {
+            const lowerQuery = query.toLowerCase();
+            const results = [];
+
+            for (const primarie of primarii) {
+                const localitate = primarie.localitate.toLowerCase();
+                
+                // Căutare exactă sau parțială pentru localitate
+                if (localitate.includes(lowerQuery) || lowerQuery.includes(localitate)) {
+                    results.push(primarie);
+                }
+                
+                // Căutare după cuvinte cheie
+                if (lowerQuery.includes("telefon") || lowerQuery.includes("tel")) {
+                    if (localitate.includes(lowerQuery.replace(/telefon|tel/gi, '').trim())) {
+                        return `📞 Telefonul primăriei ${primarie.localitate}: ${primarie.telefon}`;
+                    }
+                }
+                
+                if (lowerQuery.includes("email") || lowerQuery.includes("mail")) {
+                    if (localitate.includes(lowerQuery.replace(/email|mail/gi, '').trim())) {
+                        return `📧 Email-ul primăriei ${primarie.localitate}: ${primarie.email}`;
+                    }
+                }
+                
+                if (lowerQuery.includes("primar")) {
+                    if (localitate.includes(lowerQuery.replace(/primar/gi, '').trim())) {
+                        return `👤 Primarul localității ${primarie.localitate}: ${primarie.primar}`;
+                    }
+                }
+                
+                if (lowerQuery.includes("fax")) {
+                    if (localitate.includes(lowerQuery.replace(/fax/gi, '').trim())) {
+                        return `📠 Faxul primăriei ${primarie.localitate}: ${primarie.fax}`;
+                    }
+                }
+            }
+
+            // Căutare generală
+            if (results.length > 0) {
+                let response = `Am găsit informații despre ${results[0].localitate}:\n\n`;
+                response += `📍 <strong>Localitate:</strong> ${results[0].localitate}\n`;
+                response += `👤 <strong>Primar:</strong> ${results[0].primar}\n`;
+                response += `📞 <strong>Telefon:</strong> ${results[0].telefon}\n`;
+                response += `📠 <strong>Fax:</strong> ${results[0].fax}\n`;
+                response += `📧 <strong>Email:</strong> ${results[0].email}`;
+                return response;
+            }
+
+            // Sugestii pentru localități similare
+            const suggestions = [];
+            for (const primarie of primarii) {
+                if (primarie.localitate.toLowerCase().charAt(0) === lowerQuery.charAt(0)) {
+                    suggestions.push(primarie.localitate);
+                }
+            }
+
+            if (suggestions.length > 0) {
+                return `Nu am găsit "${query}", dar poate te referi la: ${suggestions.slice(0, 5).join(', ')}?`;
+            }
+
+            return `Nu am găsit informații despre "${query}". Încearcă să scrii numele complet al localității sau întreabă specific despre telefon, email, primar, etc.`;
+        }
+
+        function addMessage(message, isUser) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            bubble.innerHTML = message;
+            
+            messageDiv.appendChild(bubble);
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const query = input.value.trim();
+            
+            if (!query) return;
+            
+            addMessage(query, true);
+            
+            setTimeout(() => {
+                const response = searchPrimaria(query);
+                addMessage(response, false);
+            }, 500);
+            
+            input.value = '';
+        }
+
+        function askQuestion(question) {
+            document.getElementById('userInput').value = question;
+            sendMessage();
+        }
+    </script>
+</body>
+</html>
