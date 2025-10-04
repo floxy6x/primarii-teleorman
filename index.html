@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Info Primării Teleorman</title>
+    <title>Info Primării Teleorman - 24NEWSRO.RO</title>
+    <meta name="description" content="Informații complete despre toate primăriile din județul Teleorman - telefon, email, primar. Serviciu oferit de 24NEWSRO.RO">
+    <meta property="og:title" content="Info Primării Teleorman - 24NEWSRO.RO">
+    <meta property="og:description" content="Găsiți rapid informații de contact pentru orice primărie din Teleorman">
+    <meta property="og:url" content="https://24newsro.ro">
     <style>
         * {
             margin: 0;
@@ -13,7 +17,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -31,10 +35,55 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
             color: white;
             padding: 30px;
             text-align: center;
+            position: relative;
+        }
+        
+        .logo-container {
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #1e3c72 0%, #e74c3c 100%);
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .logo-text {
+            text-align: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .logo-number {
+            font-size: 48px;
+            line-height: 1;
+            margin-bottom: -5px;
+        }
+        
+        .logo-news {
+            display: flex;
+            gap: 2px;
+            justify-content: center;
+        }
+        
+        .logo-box {
+            background: rgba(255,255,255,0.9);
+            color: #e74c3c;
+            padding: 2px 6px;
+            font-size: 16px;
+            font-weight: bold;
+            border: 1px solid #fff;
         }
 
         .header h1 {
@@ -45,6 +94,28 @@
         .header p {
             opacity: 0.9;
             font-size: 14px;
+        }
+        
+        .branding {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: inline-block;
+        }
+        
+        .branding a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        
+        .branding a:hover {
+            text-shadow: 0 0 10px rgba(255,255,255,0.8);
+            transform: scale(1.05);
+            display: inline-block;
         }
 
         .chat-container {
@@ -75,7 +146,7 @@
         }
 
         .user-message .bubble {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
             color: white;
             display: inline-block;
             padding: 10px 15px;
@@ -117,11 +188,11 @@
         }
 
         input[type="text"]:focus {
-            border-color: #667eea;
+            border-color: #e74c3c;
         }
 
         button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
             color: white;
             border: none;
             padding: 12px 25px;
@@ -134,7 +205,7 @@
 
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
         }
 
         button:active {
@@ -168,25 +239,62 @@
         }
 
         .suggestion-chip:hover {
-            background: #667eea;
+            background: #e74c3c;
             color: white;
-            border-color: #667eea;
+            border-color: #e74c3c;
             transform: translateY(-2px);
+        }
+        .footer {
+            padding: 15px;
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            font-size: 12px;
+        }
+        
+        .footer a {
+            color: #e74c3c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .footer a:hover {
+            color: #ff6b6b;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏛️ Info Primării Teleorman</h1>
+            <div class="logo-container">
+                <div class="logo">
+                    <div class="logo-text">
+                        <div class="logo-number">24</div>
+                        <div class="logo-news">
+                            <span class="logo-box">n</span>
+                            <span class="logo-box">e</span>
+                            <span class="logo-box">w</span>
+                            <span class="logo-box">s</span>
+                            <span class="logo-box">ro</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h1>Info Primării Teleorman</h1>
             <p>Întreabă despre orice primărie din județ</p>
+            <div class="branding">
+                📰 Sunteți pe portalul <a href="https://24newsro.ro/" target="_blank">24NEWSRO.RO</a> - 
+                Informații din Teleorman | 
+                <a href="https://24newsro.ro/contact" target="_blank">Contact</a>
+            </div>
         </div>
         
         <div class="chat-container" id="chatContainer">
             <div class="message bot-message">
                 <div class="bubble">
-                    Bună! 👋 Pot să îți ofer informații despre primăriile din județul Teleorman. 
-                    Întreabă-mă despre telefon, fax, email sau persoana de contact pentru orice primărie.
+                    Bună! 👋 Bine ați venit pe serviciul de informații al <strong>24NEWSRO.RO</strong>!<br><br>
+                    Pot să vă ofer informații complete despre toate primăriile din județul Teleorman. 
+                    Întrebați-mă despre telefon, fax, email sau persoana de contact pentru orice primărie.
                 </div>
             </div>
         </div>
@@ -203,6 +311,12 @@
             <input type="text" id="userInput" placeholder="Scrie întrebarea ta aici..." 
                    onkeypress="if(event.key==='Enter') sendMessage()">
             <button onclick="sendMessage()">Trimite</button>
+        </div>
+        
+        <div class="footer">
+            © 2024 <a href="https://24newsro.ro/" target="_blank">24NEWSRO.RO</a> - Portal de știri Teleorman | 
+            <a href="https://24newsro.ro/contact" target="_blank">Contact Redacție</a> | 
+            Informații actualizate despre toate primăriile din județ
         </div>
     </div>
 
@@ -285,7 +399,7 @@
             {localitate: "Scurtu Mare", primar: "Lăzărescu Ilie Costel", telefon: "-", fax: "-", email: "s.primarie@yahoo.com"},
             {localitate: "Seaca", primar: "Dincă Marian Emil", telefon: "0247 420850", fax: "0247 420850", email: "primaria_seaca@yahoo.com"},
             {localitate: "Segarcea Vale", primar: "Gheldiu Claudiu Gabriel", telefon: "0247 358794", fax: "0247 358794", email: "primariasegarceavale@yahoo.com"},
-            {localitate: "Sfinteşti", primar: "Ceaușu Marian Anișor", telefon: "0347 524158", fax: "-", email: "sfintesti_tr@yahoo.com"},
+            {localitate: "Sfintești", primar: "Ceaușu Marian Anișor", telefon: "0347 524158", fax: "-", email: "sfintesti_tr@yahoo.com"},
             {localitate: "Siliștea", primar: "Marin Alexandru", telefon: "0247 452633", fax: "0247 452633", email: "primaria.silistea@yahoo.com"},
             {localitate: "Siliștea Gumești", primar: "Dicu Anișoara", telefon: "-", fax: "-", email: "primaria_silistea_gumesti@yahoo.com"},
             {localitate: "Slobozia Mândra", primar: "Ștefan Marinel", telefon: "0247 359046", fax: "0247 359046", email: "primariasloboziamandratr@gmail.com"},
@@ -316,71 +430,69 @@
         function searchPrimaria(query) {
             const lowerQuery = query.toLowerCase();
             const queryNoDiacritics = removeDiacritics(lowerQuery);
-            const results = [];
-
+            
+            // Căutare exactă pentru localitate
             for (const primarie of primarii) {
                 const localitate = primarie.localitate.toLowerCase();
                 const localitateNoDiacritics = removeDiacritics(localitate);
                 
-                // Căutare exactă sau parțială pentru localitate (cu și fără diacritice)
-                if (localitate.includes(lowerQuery) || lowerQuery.includes(localitate) ||
-                    localitateNoDiacritics.includes(queryNoDiacritics) || queryNoDiacritics.includes(localitateNoDiacritics)) {
-                    results.push(primarie);
-                }
-                
-                // Căutare după cuvinte cheie
+                // Verifică dacă query-ul conține cuvinte cheie specifice
                 if (lowerQuery.includes("telefon") || lowerQuery.includes("tel")) {
-                    const searchTerm = removeDiacritics(lowerQuery.replace(/telefon|tel/gi, '').trim());
-                    if (localitateNoDiacritics.includes(searchTerm)) {
+                    const searchTerm = lowerQuery.replace(/telefon|tel/gi, '').trim();
+                    const searchTermNoDiacritics = removeDiacritics(searchTerm);
+                    if (localitate.includes(searchTerm) || localitateNoDiacritics.includes(searchTermNoDiacritics)) {
                         return `📞 Telefonul primăriei ${primarie.localitate}: ${primarie.telefon}`;
                     }
                 }
                 
                 if (lowerQuery.includes("email") || lowerQuery.includes("mail")) {
-                    const searchTerm = removeDiacritics(lowerQuery.replace(/email|mail/gi, '').trim());
-                    if (localitateNoDiacritics.includes(searchTerm)) {
+                    const searchTerm = lowerQuery.replace(/email|mail/gi, '').trim();
+                    const searchTermNoDiacritics = removeDiacritics(searchTerm);
+                    if (localitate.includes(searchTerm) || localitateNoDiacritics.includes(searchTermNoDiacritics)) {
                         return `📧 Email-ul primăriei ${primarie.localitate}: ${primarie.email}`;
                     }
                 }
                 
                 if (lowerQuery.includes("primar")) {
-                    const searchTerm = removeDiacritics(lowerQuery.replace(/primar/gi, '').trim());
-                    if (localitateNoDiacritics.includes(searchTerm)) {
+                    const searchTerm = lowerQuery.replace(/primar/gi, '').trim();
+                    const searchTermNoDiacritics = removeDiacritics(searchTerm);
+                    if (localitate.includes(searchTerm) || localitateNoDiacritics.includes(searchTermNoDiacritics)) {
                         return `👤 Primarul localității ${primarie.localitate}: ${primarie.primar}`;
                     }
                 }
                 
                 if (lowerQuery.includes("fax")) {
-                    const searchTerm = removeDiacritics(lowerQuery.replace(/fax/gi, '').trim());
-                    if (localitateNoDiacritics.includes(searchTerm)) {
+                    const searchTerm = lowerQuery.replace(/fax/gi, '').trim();
+                    const searchTermNoDiacritics = removeDiacritics(searchTerm);
+                    if (localitate.includes(searchTerm) || localitateNoDiacritics.includes(searchTermNoDiacritics)) {
                         return `📠 Faxul primăriei ${primarie.localitate}: ${primarie.fax}`;
                     }
                 }
-            }
-
-            // Căutare generală
-            if (results.length > 0) {
-                let response = `Am găsit informații despre ${results[0].localitate}:\n\n`;
-                response += `📍 <strong>Localitate:</strong> ${results[0].localitate}\n`;
-                response += `👤 <strong>Primar:</strong> ${results[0].primar}\n`;
-                response += `📞 <strong>Telefon:</strong> ${results[0].telefon}\n`;
-                response += `📠 <strong>Fax:</strong> ${results[0].fax}\n`;
-                response += `📧 <strong>Email:</strong> ${results[0].email}`;
-                return response;
+                
+                // Căutare generală pentru localitate
+                if (localitate === lowerQuery || localitateNoDiacritics === queryNoDiacritics ||
+                    localitate.includes(lowerQuery) || localitateNoDiacritics.includes(queryNoDiacritics)) {
+                    let response = `Am găsit informații despre <strong>${primarie.localitate}</strong>:<br><br>`;
+                    response += `📍 <strong>Localitate:</strong> ${primarie.localitate}<br>`;
+                    response += `👤 <strong>Primar:</strong> ${primarie.primar}<br>`;
+                    response += `📞 <strong>Telefon:</strong> ${primarie.telefon}<br>`;
+                    response += `📠 <strong>Fax:</strong> ${primarie.fax}<br>`;
+                    response += `📧 <strong>Email:</strong> ${primarie.email}`;
+                    return response;
+                }
             }
 
             // Sugestii pentru localități similare
             const suggestions = [];
-            const queryFirstChar = removeDiacritics(lowerQuery.charAt(0));
             for (const primarie of primarii) {
-                const localFirstChar = removeDiacritics(primarie.localitate.toLowerCase().charAt(0));
-                if (localFirstChar === queryFirstChar) {
+                const localitateNoDiacritics = removeDiacritics(primarie.localitate.toLowerCase());
+                if (localitateNoDiacritics.charAt(0) === queryNoDiacritics.charAt(0)) {
                     suggestions.push(primarie.localitate);
                 }
             }
 
             if (suggestions.length > 0) {
-                return `Nu am găsit "${query}", dar poate te referi la: ${suggestions.slice(0, 5).join(', ')}?`;
+                return `Nu am găsit exact "${query}", dar poate te referi la: ${suggestions.slice(0, 5).join(', ')}?`;
             }
 
             return `Nu am găsit informații despre "${query}". Încearcă să scrii numele complet al localității sau întreabă specific despre telefon, email, primar, etc.`;
