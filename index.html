@@ -308,39 +308,51 @@
             {localitate: "Zâmbreasca", primar: "Răduț Marin", telefon: "0247 338401", fax: "0247 338401", email: "primaria.zambreasca@gmail.com"}
         ];
 
+        // Funcție pentru a elimina diacriticele
+        function removeDiacritics(str) {
+            return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        }
+
         function searchPrimaria(query) {
             const lowerQuery = query.toLowerCase();
+            const queryNoDiacritics = removeDiacritics(lowerQuery);
             const results = [];
 
             for (const primarie of primarii) {
                 const localitate = primarie.localitate.toLowerCase();
+                const localitateNoDiacritics = removeDiacritics(localitate);
                 
-                // Căutare exactă sau parțială pentru localitate
-                if (localitate.includes(lowerQuery) || lowerQuery.includes(localitate)) {
+                // Căutare exactă sau parțială pentru localitate (cu și fără diacritice)
+                if (localitate.includes(lowerQuery) || lowerQuery.includes(localitate) ||
+                    localitateNoDiacritics.includes(queryNoDiacritics) || queryNoDiacritics.includes(localitateNoDiacritics)) {
                     results.push(primarie);
                 }
                 
                 // Căutare după cuvinte cheie
                 if (lowerQuery.includes("telefon") || lowerQuery.includes("tel")) {
-                    if (localitate.includes(lowerQuery.replace(/telefon|tel/gi, '').trim())) {
+                    const searchTerm = removeDiacritics(lowerQuery.replace(/telefon|tel/gi, '').trim());
+                    if (localitateNoDiacritics.includes(searchTerm)) {
                         return `📞 Telefonul primăriei ${primarie.localitate}: ${primarie.telefon}`;
                     }
                 }
                 
                 if (lowerQuery.includes("email") || lowerQuery.includes("mail")) {
-                    if (localitate.includes(lowerQuery.replace(/email|mail/gi, '').trim())) {
+                    const searchTerm = removeDiacritics(lowerQuery.replace(/email|mail/gi, '').trim());
+                    if (localitateNoDiacritics.includes(searchTerm)) {
                         return `📧 Email-ul primăriei ${primarie.localitate}: ${primarie.email}`;
                     }
                 }
                 
                 if (lowerQuery.includes("primar")) {
-                    if (localitate.includes(lowerQuery.replace(/primar/gi, '').trim())) {
+                    const searchTerm = removeDiacritics(lowerQuery.replace(/primar/gi, '').trim());
+                    if (localitateNoDiacritics.includes(searchTerm)) {
                         return `👤 Primarul localității ${primarie.localitate}: ${primarie.primar}`;
                     }
                 }
                 
                 if (lowerQuery.includes("fax")) {
-                    if (localitate.includes(lowerQuery.replace(/fax/gi, '').trim())) {
+                    const searchTerm = removeDiacritics(lowerQuery.replace(/fax/gi, '').trim());
+                    if (localitateNoDiacritics.includes(searchTerm)) {
                         return `📠 Faxul primăriei ${primarie.localitate}: ${primarie.fax}`;
                     }
                 }
@@ -359,8 +371,10 @@
 
             // Sugestii pentru localități similare
             const suggestions = [];
+            const queryFirstChar = removeDiacritics(lowerQuery.charAt(0));
             for (const primarie of primarii) {
-                if (primarie.localitate.toLowerCase().charAt(0) === lowerQuery.charAt(0)) {
+                const localFirstChar = removeDiacritics(primarie.localitate.toLowerCase().charAt(0));
+                if (localFirstChar === queryFirstChar) {
                     suggestions.push(primarie.localitate);
                 }
             }
